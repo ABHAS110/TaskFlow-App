@@ -42,6 +42,18 @@ app.use(
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
+// ── Root Gateway Route ─────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: '🚀 Welcome to the TaskFlow API Gateway',
+    status: 'Healthy',
+    version: '1.0.0',
+    repository: 'https://github.com/ABHAS110/TaskFlow-App',
+    documentation: 'https://github.com/ABHAS110/TaskFlow-App#api-documentation',
+  });
+});
+
 // ── Health Check ──────────────────────────────────────────────
 app.get('/health', (req, res) => {
   res.status(200).json({
