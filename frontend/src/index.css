@@ -1,0 +1,324 @@
+/* ── Google Fonts ──────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Custom Properties ──────────────────────────────────── */
+:root {
+  --color-bg: #0F1117;
+  --color-surface: #1A1D27;
+  --color-border: #2D3148;
+  --color-accent: #6366F1;
+  --color-accent-light: #818CF8;
+  --color-accent-dark: #4F46E5;
+  --color-todo: #3B82F6;
+  --color-progress: #F59E0B;
+  --color-done: #10B981;
+  --color-text-primary: #F1F5F9;
+  --color-text-muted: #94A3B8;
+  --color-text-subtle: #64748B;
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-modal: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* Light mode overrides */
+.light {
+  --color-bg: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E8F0;
+  --color-text-primary: #1E293B;
+  --color-text-muted: #64748B;
+  --color-text-subtle: #94A3B8;
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Base Styles ────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ── Scrollbar Styles ───────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-subtle);
+}
+
+/* ── Selection ──────────────────────────────────────────────── */
+::selection {
+  background-color: rgba(99, 102, 241, 0.3);
+  color: var(--color-text-primary);
+}
+
+/* ── Focus Styles ───────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Typography ─────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+/* ── Custom Components ──────────────────────────────────────── */
+@layer components {
+  /* Glassmorphism card */
+  .glass-card {
+    background: rgba(26, 29, 39, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(45, 49, 72, 0.5);
+  }
+
+  .light .glass-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+  }
+
+  /* Button base */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200 cursor-pointer select-none;
+  }
+
+  .btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-white hover:bg-accent-dark active:scale-95 shadow-md hover:shadow-glow;
+  }
+
+  .btn-secondary {
+    @apply btn bg-dark-surface text-text-muted hover:bg-dark-hover hover:text-text-primary border border-dark-border active:scale-95;
+  }
+
+  .light .btn-secondary {
+    @apply bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 border-slate-200;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply btn text-text-muted hover:text-text-primary hover:bg-dark-hover active:scale-95;
+  }
+
+  /* Input base */
+  .input {
+    @apply w-full px-4 py-3 rounded-xl bg-dark-surface border border-dark-border text-text-primary placeholder-text-subtle text-sm transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent;
+  }
+
+  .light .input {
+    @apply bg-white border-slate-200 text-slate-900 placeholder-slate-400;
+    @apply focus:ring-indigo-200 focus:border-indigo-400;
+  }
+
+  .input-error {
+    @apply border-red-500/50 focus:ring-red-500/30 focus:border-red-500;
+  }
+
+  /* Label */
+  .label {
+    @apply block text-sm font-medium text-text-muted mb-1.5;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-todo {
+    @apply badge bg-blue-500/15 text-blue-400 border border-blue-500/20;
+  }
+
+  .badge-progress {
+    @apply badge bg-amber-500/15 text-amber-400 border border-amber-500/20;
+  }
+
+  .badge-done {
+    @apply badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/20;
+  }
+
+  /* Task card */
+  .task-card {
+    @apply rounded-xl border border-dark-border bg-dark-surface p-4 cursor-grab active:cursor-grabbing;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+
+  .task-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    @apply border-dark-hover -translate-y-0.5;
+  }
+
+  .light .task-card {
+    @apply border-slate-200 bg-white;
+  }
+
+  /* Kanban column */
+  .kanban-column {
+    @apply flex flex-col rounded-2xl border border-dark-border;
+    background: linear-gradient(180deg, rgba(26, 29, 39, 0.6) 0%, rgba(26, 29, 39, 0.3) 100%);
+    min-height: 400px;
+    width: 320px;
+    flex-shrink: 0;
+  }
+
+  .light .kanban-column {
+    @apply border-slate-200;
+    background: linear-gradient(180deg, rgba(248, 250, 252, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%);
+  }
+
+  /* Auth page gradient */
+  .auth-gradient {
+    background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at bottom right, rgba(16, 185, 129, 0.1) 0%, transparent 60%),
+                var(--color-bg);
+  }
+
+  /* Overlay */
+  .overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+  }
+
+  /* Sidebar nav item */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-text-muted cursor-pointer transition-all duration-150;
+  }
+
+  .nav-item:hover {
+    @apply bg-dark-hover text-text-primary;
+  }
+
+  .nav-item.active {
+    @apply bg-accent/15 text-accent-light;
+  }
+
+  .light .nav-item:hover {
+    @apply bg-slate-100 text-slate-900;
+  }
+
+  .light .nav-item.active {
+    @apply bg-indigo-50 text-indigo-600;
+  }
+}
+
+/* ── Drag and Drop ──────────────────────────────────────────── */
+[data-rbd-draggable-context-id] {
+  transition: none !important;
+}
+
+[data-rbd-drag-handle-context-id]:active {
+  cursor: grabbing !important;
+}
+
+/* Drag ghost opacity */
+[data-rbd-draggable-id].is-dragging {
+  opacity: 0.85;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Drop zone highlight */
+[data-rbd-droppable-id].drag-over {
+  background: rgba(99, 102, 241, 0.05);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* ── Animations ─────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-10px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.25s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.2s ease-out;
+}
+
+/* ── Skeleton Loader ────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-border) 50%, var(--color-surface) 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* ── Toast Overrides ────────────────────────────────────────── */
+.react-hot-toast > div {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .kanban-column {
+    width: 100%;
+    min-height: 200px;
+  }
+}
